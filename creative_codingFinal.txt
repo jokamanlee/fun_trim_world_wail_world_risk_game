@@ -1,0 +1,42 @@
+Creative Coding Final
+
+2D shooter
+
+Kirby
+
+Cheese = Ultimate = Surprise Effect
+
+(Might have to find a way to incorporate Tetris)
+
+Wailing Globs
+
+
+Start thinking please
+
+You have Kirby who is the character that you are going to control
+
+Make it an orange Kirby
+
+Shooting at blobs and after you defeat them, they drop a piece of cheese and you can collect them
+
+By collecting each cheese your ultimate bar charges
+
+
+Make a pop up game when the ultimate bar reaches full where is is choose the right piece to fit in the slot like a multiple choice option 
+If you get it right then ur ultimate goes through and it kills everything in front of what your facing like a big beam 
+
+
+GOAL:
+Keep fighting minions if you reach a certain time the small globs begin to merge and the big boss comes out and you have to defeat it to win
+
+Extra:
+I can put extra levels to make it harder
+
+
+
+
+
+
+
+
+❤️ 
