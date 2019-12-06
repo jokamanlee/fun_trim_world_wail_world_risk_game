@@ -23,7 +23,7 @@ var dbFour;
 var dbFive;
 var dbSix;
 var blockPass = [];
-var bp = -1;
+var bp = 0;
 var db = [];
 var a = 880;
 var UltimateBar;
@@ -110,7 +110,7 @@ if(screenChange == 1){
       }
     }
     if(ult.ultimate == 100){
-        if(bp == -1){
+        if(bp == 0){
           text("so i see that your have charged your ultimate \n BUT \n you don't need it since you are just that good at this game \n so instead of here is a upgrade for your bullets",width/2,height/2);
           for(var e = 0; e < shoots.length; e++){
             shoots[e].radius = 30;
@@ -153,8 +153,10 @@ if(screenChange == 2){
   fill(0);
   text("you did great! \n your time was: " + clock, width/2,height/2);
 }
-}
+// console.log(bp);
 
+}
+// console.log("yo");
 
 
 //////////////////////////K I R B Y   C H A R A C T E R /////////////////////////////////
@@ -332,12 +334,7 @@ Glob.prototype.shrink = function(){
 
 Glob.prototype.move = function(){
   this.yPosition += this.yDir;
-  if(clock >= 30 && clock <= 60){
-    this.yDir = 5;
-  }
-  if(clock >= 60 && clock <= 120){
-    this.yDir = 10;
-  }
+
   // console.log("log");
 
 
@@ -397,10 +394,11 @@ GlobSystem.prototype.run = function(){
         p.run();
         console.log(globs[i].yDir);
 
-        if(p.yPosition >= 900){
+        if(p.yPosition >= height){
           bp += 1;
+          globs.splice(i,1);
           // a -= 80;
-          // console.log(bp);
+          console.log(bp);
         }
 
     }
@@ -518,434 +516,3 @@ function Timer (){
 Timer.prototype.countup = function(){
   clock += 1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function GlobSystem(){
-//   this.xPosition
-//   this.blocks;
-//   this.rows = r;
-//   this.cols = c;
-//   this.blockSize = 30;
-//   this.blockSpacing = 1.3;
-// }
-// GlobSystem.prototype.produce = function(){
-//   this.blocks = new Array(this.rows);
-//
-//   for(var r = 0; r < this.rows; r++) {
-//     this.blocks[r] = new Array(this.cols);
-//   }
-//
-//   for(var r = 0; r < this.rows; r++) {
-//     for(var c = 0; c < this.cols; c++ {
-//       this.blocks[r][c] = new Glob(this.x-(this.cols*(this.blockSize*this.blocknSpacing))/2 + (this.blockSize*this.blockSpacing)*c, this.y-(this.rows*(this.blockSize*this.blockSpacing))/2 + (this.blockSize*this.blockSpacing)*r, this.blockSize);
-//     }
-//
-//   }
-// }
-
-
-///////////////////////////P O P  U P  T E T R I S   G A M E ///////////////////////////////////////
-//
-// function TetrisBlock (x,y){
-//   this.xPosition = x;
-//   this.yPosition = y;
-//   this.boxDimension = 60;
-//
-//
-// }
-//
-// TetrisBlock.prototype.displayIt = function(){
-//   fill(255,0,0);
-//   rect(this.xPosition,this.yPosition,this.boxDimension,this.boxDimension);
-//
-//
-// }
-//
-// TetrisBlock.prototype.drop = function(){
-//   this.yPosition += this.boxDimension;
-// }
-//
-// TetrisBlock.prototype.move = function(){
-//   if (moveLeftBlock == true){
-//     this.xPosition -= 3;
-//   }
-//   if (moveRightBlock == true){
-//     this.xPosition += 3;
-//   }
-// }
-//
-//
-// function Pieces (originalShape = [[]],x,y){
-//   this.originalShape = originalShape;
-//   this.xPosition = x;
-//   this.yPosition = y;
-//   this.shape = this.fillPieces(originalShape.length);
-// }
-//
-// Pieces.prototype.fillPieces = function(pieceLength){
-//   return Array.from( (new Array(pieceLength), (row,i) =>
-//   Array.from( ( new Array(pieceLength), (col,j) =>
-//   this.originalShape[i][j] == 1 ? new TetrisBlock(this.xPosition + j * this.boxDimension, this.yPosition + i * this.boxDimension) : null
-// )
-// )
-// )
-// )
-// }
-//
-//
-//
-//
-//
-//
-//
-// Pieces.prototype.display = function(){
-//   this.shape.forEach(x => x.filter(j => j != null).forEach(TetrisBlock => TetrisBlock.display()));
-// }
-//
-//
-//
-//
-//
-// let types= {
-//
-// 	O: [
-// 		['#f43', '#f43'],
-// 		['#f43', '#f43']
-// 	],
-//
-//
-// 	J: [
-// 		['#f43',  null ,  null ],
-// 		['#f43', '#f43', '#f43'],
-// 		[ null ,  null ,  null ]
-// 	],
-//
-//
-// 	L: [
-// 		[ null ,  null , '#f43'],
-// 		['#f43', '#f43', '#f43'],
-// 		[ null ,  null ,  null ]
-// 	],
-//
-//
-// 	S: [
-// 		[ null , '#f43', '#f43'],
-// 		['#f43', '#f43',  null ],
-// 		[ null ,  null ,  null ]
-// 	],
-//
-//
-// 	Z: [
-// 		['#f43', '#f43',  null ],
-// 		[ null , '#f43', '#f43'],
-// 		[ null ,  null ,  null ]
-// 	],
-//
-//
-// 	T: [
-// 		[ null , '#f43',  null ],
-// 		['#f43', '#f43', '#f43'],
-// 		[ null ,  null ,  null ]
-// 	],
-//
-//
-// 	I: [
-// 		[ null ,  null ,  null ,  null ],
-// 		['#f43', '#f43', '#f43', '#f43'],
-// 		[ null ,  null ,  null ,  null ],
-// 		[ null ,  null ,  null ,  null ],
-// 	]
-//
-// }
-//
-// function spawnPieces(){
-//   const pieces = ['O', 'J', 'L', 'S', 'Z', 'T', 'I'];
-//   const choice = random(pieces);
-//
-// }
-
-
-// function TertisBlockLine (){
-//   this.
-// }
-
-
-///////////////////////////P R I Z E  D R O P /////////////////////////////////////////
-
-//
-// function Boost (x,y){
-//   this.xPosition = x;
-//   this.yPosition = y;
-// }
-//
-// Boost.prototype.display = function(){
-//   image(Cheese,this.xPosition,this.yPosition,100,100);
-// }
-
-
-
-
-
-
-
-
-  //
-  //
-  // if(bp == 1){
-  //   dbOne = new DeathBlock(0,880);
-  //   dbOne.display();
-  // }
-  // if(bp == 2){
-  //   dbOne = new DeathBlock(0,880);
-  //   dbOne.display();
-  //   dbTwo = new DeathBlock(0,800);
-  //   dbTwo.display();
-  // }
-  // if(bp == 3){
-  //   dbOne = new DeathBlock(0,880);
-  //   dbOne.display();
-  //   dbTwo = new DeathBlock(0,800);
-  //   dbTwo.display();
-  //   dbThree = new DeathBlock(0,720);
-  //   dbThree.display();
-  // }
-  // if(bp == 4){
-  //   dbOne = new DeathBlock(0,880);
-  //   dbOne.display();
-  //   dbTwo = new DeathBlock(0,800);
-  //   dbTwo.display();
-  //   dbThree = new DeathBlock(0,720);
-  //   dbThree.display();
-  //   dbFour = new DeathBlock(0,640);
-  //   dbFour.display();
-  // }
-  // if(bp == 5){
-  //   dbOne = new DeathBlock(0,880);
-  //   dbOne.display();
-  //   dbTwo = new DeathBlock(0,800);
-  //   dbTwo.display();
-  //   dbThree = new DeathBlock(0,720);
-  //   dbThree.display();
-  //   dbFour = new DeathBlock(0,640);
-  //   dbFour.display();
-  //   dbFive = new DeathBlock(0,560);
-  //   dbFive.display();
-  // }
-  // if(bp == 6){
-  //   dbOne = new DeathBlock(0,880);
-  //   dbOne.display();
-  //   dbTwo = new DeathBlock(0,800);
-  //   dbTwo.display();
-  //   dbThree = new DeathBlock(0,720);
-  //   dbThree.display();
-  //   dbFour = new DeathBlock(0,640);
-  //   dbFour.display();
-  //   dbFive = new DeathBlock(0,560);
-  //   dbFive.display();
-  //   dbSix = new DeathBlock(0,480);
-  //   dbSix.display();
-  // }
-  // if(bp == 7){
-  //   dbOne = new DeathBlock(0,880);
-  //   dbOne.display();
-  //   dbTwo = new DeathBlock(0,800);
-  //   dbTwo.display();
-  //   dbThree = new DeathBlock(0,720);
-  //   dbThree.display();
-  //   dbFour = new DeathBlock(0,640);
-  //   dbFour.display();
-  //   dbFive = new DeathBlock(0,560);
-  //   dbFive.display();
-  //   dbSix = new DeathBlock(0,480);
-  //   dbSix.display();
-  //   dbSeven = new DeathBlock(0,420);
-  //   dbSeven.display();
-  // }
-  // if(bp == 8){
-  //   dbOne = new DeathBlock(0,880);
-  //   dbOne.display();
-  //   dbTwo = new DeathBlock(0,800);
-  //   dbTwo.display();
-  //   dbThree = new DeathBlock(0,720);
-  //   dbThree.display();
-  //   dbFour = new DeathBlock(0,640);
-  //   dbFour.display();
-  //   dbFive = new DeathBlock(0,560);
-  //   dbFive.display();
-  //   dbSix = new DeathBlock(0,480);
-  //   dbSix.display();
-  //   dbSeven = new DeathBlock(0,420);
-  //   dbSeven.display();
-  //   dbEight = new DeathBlock(0,340);
-  //   dbEight.display();
-  // }
-  // if(bp == 9){
-  //   dbOne = new DeathBlock(0,880);
-  //   dbOne.display();
-  //   dbTwo = new DeathBlock(0,800);
-  //   dbTwo.display();
-  //   dbThree = new DeathBlock(0,720);
-  //   dbThree.display();
-  //   dbFour = new DeathBlock(0,640);
-  //   dbFour.display();
-  //   dbFive = new DeathBlock(0,560);
-  //   dbFive.display();
-  //   dbSix = new DeathBlock(0,480);
-  //   dbSix.display();
-  //   dbSeven = new DeathBlock(0,420);
-  //   dbSeven.display();
-  //   dbEight = new DeathBlock(0,340);
-  //   dbEight.display();
-  //   dbNine = new DeathBlock(0,260);
-  //   dbNine.display();
-  // }
-  // if(bp == 10){
-  //   dbOne = new DeathBlock(0,880);
-  //   dbOne.display();
-  //   dbTwo = new DeathBlock(0,800);
-  //   dbTwo.display();
-  //   dbThree = new DeathBlock(0,720);
-  //   dbThree.display();
-  //   dbFour = new DeathBlock(0,640);
-  //   dbFour.display();
-  //   dbFive = new DeathBlock(0,560);
-  //   dbFive.display();
-  //   dbSix = new DeathBlock(0,480);
-  //   dbSix.display();
-  //   dbSeven = new DeathBlock(0,420);
-  //   dbSeven.display();
-  //   dbEight = new DeathBlock(0,340);
-  //   dbEight.display();
-  //   dbNine = new DeathBlock(0,260);
-  //   dbNine.display();
-  //   dbTen = new DeathBlock(0,180);
-  //   dbTen.display();
-  // }
-  // if(bp == 11){
-  //   dbOne = new DeathBlock(0,880);
-  //   dbOne.display();
-  //   dbTwo = new DeathBlock(0,800);
-  //   dbTwo.display();
-  //   dbThree = new DeathBlock(0,720);
-  //   dbThree.display();
-  //   dbFour = new DeathBlock(0,640);
-  //   dbFour.display();
-  //   dbFive = new DeathBlock(0,560);
-  //   dbFive.display();
-  //   dbSix = new DeathBlock(0,480);
-  //   dbSix.display();
-  //   dbSeven = new DeathBlock(0,420);
-  //   dbSeven.display();
-  //   dbEight = new DeathBlock(0,340);
-  //   dbEight.display();
-  //   dbNine = new DeathBlock(0,260);
-  //   dbNine.display();
-  //   dbTen = new DeathBlock(0,180);
-  //   dbTen.display();
-  //   dbEleven = new DeathBlock(0,100);
-  //   dbEleven.display();
-  // }
-  // if(bp == 12){
-  //   dbOne = new DeathBlock(0,880);
-  //   dbOne.display();
-  //   dbTwo = new DeathBlock(0,800);
-  //   dbTwo.display();
-  //   dbThree = new DeathBlock(0,720);
-  //   dbThree.display();
-  //   dbFour = new DeathBlock(0,640);
-  //   dbFour.display();
-  //   dbFive = new DeathBlock(0,560);
-  //   dbFive.display();
-  //   dbSix = new DeathBlock(0,480);
-  //   dbSix.display();
-  //   dbSeven = new DeathBlock(0,420);
-  //   dbSeven.display();
-  //   dbEight = new DeathBlock(0,340);
-  //   dbEight.display();
-  //   dbNine = new DeathBlock(0,260);
-  //   dbNine.display();
-  //   dbTen = new DeathBlock(0,180);
-  //   dbTen.display();
-  //   dbEleven = new DeathBlock(0,100);
-  //   dbEleven.display();
-  //   dbTwelve = new DeathBlock(0,20);
-  //   dbTwelve.display();
-  // }
-  //
-
-
-  //
-  // for(var i = 0; i < globs.length; i ++){
-  //
-  //   if(globs[i].yPosition  == 900){
-  //     console.log("jk");
-  //     dbOne = new DeathBlock(0,900);
-  //     dbOne.display();
-  //     bp += 1;
-  //     console.log(bp);
-  //   }
-  // if(globs[i].yPosition > height ){
-  //   console.log("jk");
-  //   dbTwo = new DeathBlock(0,820);
-  //   dbTwo.display();
-  // }
-  // console.log(clock);
-
-
-
-  //
-  // function produceGlob (){
-  //   globs.push(new Glob(random(0,1000),1));
-  //   globs[i].display();
-  //   glob[i].move();
-  //   for(var i = 0; i < globs.length; i++){
-  //     for(var j = 0; j < globs.length; j++){
-  //       if(i != j && globs[i].collide(globs[j])){
-  //         globs[i].yDir = 0;
-  //         globs[j].yDir = 0;
-  //       }
-  //     }
-  //
-  //   }
-  // }
