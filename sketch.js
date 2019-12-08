@@ -1,5 +1,5 @@
 let kirby;
-let Cheese;
+let cheese;
 let leftKeyIsHeld = false;
 let rightKeyIsHeld = false;
 let upKeyIsHeld = false;
@@ -9,74 +9,65 @@ var globs = [];
 let shoots = [];
 let moveLeftBlock = false;
 let moveRightBlock = false;
-var TetrisBlock;
 var GlobSystem;
 var gs;
 var timer;
 var Glob;
 var DeathBar;
 var DeathBlock;
-var dbOne;
-var dbTwo;
-var dbThree;
-var dbFour;
-var dbFive;
-var dbSix;
-var blockPass = [];
-var bp = 0;
-var db = [];
-var a = 880;
+var bp = -1;
 var UltimateBar;
 var clock = 0;
 var screenChange = 0;
 var myVar;
-
-
-
-
+var score = 0;
+var changeColorplease;
 
 function preload(){
   kirby = loadImage('kirby.png');
-  Cheese = loadImage('Cheese.jpg');
+  cheese = loadImage('cheese.png');
 }
 
-
 function setup() {
-
   createCanvas(1000,960);
   background(20);
   textFont("Courier New");
-  // block = new TetrisBlock(0,0,60)
-  // myPiece = new Pieces(piece_S,0,0);
+  changeColorplease =  color(random(255), random(255), random(255));
   player = new Player();
   gs = new GlobSystem();
   death = new DeathBar();
   ult = new UltimateBar();
   sec = new Timer();
-  // dbs = new DeathBlockSystem();
-  // db = new DeathBlockSystem();
   death.container();
   timer = 3000;
   setInterval ( () => gs.produceGlob(), timer);
   myVar = setInterval ( () => sec.countup(),1000);
-
 }
-// var myVar;
+
 function draw() {
-
+console.log(timer);
 if (screenChange === 0){
-  background(255);
+  background(255,0,0);
+  fill(255,0,255);
+  stroke(0);
+  textSize(50);
   fill(0);
-  text("Welcome to \n Fun Trim World Wail World Risk! \n click 's' to begin",width/2, height/2);
-
-}
-
-if(screenChange == 1){
-  background(255);
+  text("Click To Start",270,560);
+  text("Epilepsy Warning",240,620);
+  fill(0);
+  textSize(30);
+  text("Welcome to",390, 250);
+  text("FUN TRIM WORLD WAIL WORLD RISK", 220,300);
+  textSize(20);
+  text("Aim at the monsters to defeat them",280,350);
+  text("Defeat as many as you can and survive the longest!", 190,400);
+  bp = -1;
+  clock = 0;
+} else if(screenChange == 1){
+  background(changeColorplease);
   fill(255);
   death.container();
   ult.display();
-  // console.log(clock);
   player.display();
   player.movement();
   gs.run();
@@ -97,45 +88,58 @@ if(screenChange == 1){
   for (var i = 0; i < shoots.length; i++){
     shoots[i].display();
     shoots[i].movement();
-
-
+//bullets go away after hitting and the globs get smaller
     for(var j = 0; j < globs.length; j++){
       if(shoots[i].hit(globs[j])){
         globs[j].shrink();
         shoots[i].gone();
       }
+      //globs diappear when it is too small
         if (globs[j].radius < 0){
           globs[j].gone();
         }
       }
     }
-    if(ult.ultimate == 100){
-        if(bp == 0){
-          text("so i see that your have charged your ultimate \n BUT \n you don't need it since you are just that good at this game \n so instead of here is a upgrade for your bullets",width/2,height/2);
+    //bullet gets big if you have no block in you deathbar
+    if(ult.ultimate == 200){
+        if(bp == -1){
+          image(cheese,700,200,100,100);
+          text("so i see that your have charged your ultimate \n BUT \n you don't need it since you are just that good at this game \n so instead of here is a upgrade for your bullets",200,100);
           for(var e = 0; e < shoots.length; e++){
-            shoots[e].radius = 30;
+            shoots[e].radius = 70;
           }
         }  else {
-            bp = 0;
+            bp = -1;
             ult.end();
           }
     }
+  }  else if(screenChange == 2){
+    background(255,0,0);
+    fill(0);
+    textSize(40);
+    text("YOU DID GREAT!",400,400);
+    text("Click to Play Again",380,450);
+    textSize(20);
+    text("Survival Time: " + clock, 400,600);
+    text("Score: " + score,400,700);
   }
   for (var i = 0; i <= bp; i++) {
+    rectMode(CORNER);
+    fill(random(255),random(255),random(255));
     rect(0, height - ((i+1) * 80), 80, 80);
   }
 // deleting the bullets
-
   for(var i = shoots.length - 1; i >= 0; i--){
     if(shoots[i].toDelete){
       shoots.splice(i,1);
-
     }
   }
+  //add to your ult bar
   for(var i = globs.length - 1; i >= 0; i--){
     if(globs[i].delete){
       globs.splice(i,1);
-      if(ult.ultimate < 100){
+      score += 1;
+      if(ult.ultimate < 200){
         ult.ultimate += 50;
       }else{
         ult.ultimate += 0;
@@ -143,36 +147,31 @@ if(screenChange == 1){
     }
   }
 
-if(bp == 13){
+//losing screen
+if(bp == 11){
   screenChange = 2;
   clearInterval(myVar);
 }
 
-if(screenChange == 2){
-  background(255);
-  fill(0);
-  text("you did great! \n your time was: " + clock, width/2,height/2);
 }
-// console.log(bp);
-
+function mousePressed(){
+  if(screenChange == 0){
+    screenChange = 1;
+  }else if (screenChange == 2){
+    screenChange = 0;
+  }
 }
-// console.log("yo");
-
-
 //////////////////////////K I R B Y   C H A R A C T E R /////////////////////////////////
-
-
-
 function Player(){
   this.xPosition = 500;
   this.yPosition = 500 ;
 }
-
+//showing kirby
 Player.prototype.display = function(){
   image(kirby,this.xPosition,this.yPosition,100,100);
 
 }
-
+//moving kirby
 Player.prototype.movement = function(){
   if (upKeyIsHeld == true){
     this.yPosition -= 5;
@@ -187,8 +186,7 @@ Player.prototype.movement = function(){
     this.xPosition += 5;
   }
 }
-
-
+//moving kirby
 function keyPressed(){
   if (keyCode === UP_ARROW){
     upKeyIsHeld = true;
@@ -214,19 +212,12 @@ function keyPressed(){
     rightKeyIsHeld = true;
     leftKeyIsHeld = false;
   }
+  //shooting
   if(key === ' '){
-    // console.log('w');
     var shoot = new Shoot(player.xPosition + 50,player.yPosition +10);
     shoots.push(shoot);
-  }
-  if(key === ','){
-    moveLeftBlock = true;
-  }
-  if(key === '.'){
-    moveRightBlock = true;
-  }
-  if(key === 's'){
-    screenChange =1;
+    changeColorplease =  color(random(255), random(255), random(255));
+
   }
 }
 
@@ -255,11 +246,8 @@ function keyReleased(){
     rightKeyIsHeld = false;
     leftKeyIsHeld = false;
   }
-  if(key === ','){
-    moveLeftBlock = false;
-  }
-  if(key === '.'){
-    moveRightBlock = false;
+  if(key === " "){
+    shootPress = false;
   }
 }
 
@@ -269,16 +257,16 @@ function Shoot(x,y){
   this.radius = 15;
   this.toDelete = false;
 }
-
+//bullet displays
 Shoot.prototype.display = function(){
   fill(random(255),random(255),random(255));
   ellipse(this.xPosition,this.yPosition,this.radius*2,this.radius*2);
 }
-
+//bullets moving
 Shoot.prototype.movement = function(){
   this.yPosition -= 4;
 }
-
+//bullets hitting
 Shoot.prototype.hit = function(Glob){
   var d = dist(this.xPosition,this.yPosition,Glob.xPosition,Glob.yPosition);
   if( d < this.radius + Glob.radius){
@@ -287,19 +275,11 @@ Shoot.prototype.hit = function(Glob){
     return false;
   }
 }
-Shoot.prototype.normalSize = function(){
-  this.radius = 15;
-}
-Shoot.prototype.ultSize = function(){
-  this.radius = 40;
-}
+//bullets go away
 Shoot.prototype.gone = function(){
   this.toDelete = true;
 }
-
-
 ////////////////////////////////E N E M Y   G L O B S ////////////////////////////////////////
-
 function Glob (x,y){
   this.xPosition = x;
   this.yPosition = y;
@@ -308,107 +288,75 @@ function Glob (x,y){
   this.yDir = 2;
   this.delete = false;
   this.total = 0;
-
-
 }
-
+//enemy display
 Glob.prototype.display = function (){
+  rectMode(CENTER);
   fill(255,0,0);
   stroke(255,0,0);
   rect(this.xPosition,this.yPosition,this.radius*2,this.radius*2);
-	// fill(255);
-	// ellipse(this.xPosition + 40, this.yPosition + 40, this.radius*2 - 10, this.radius*2 - 10);
-  //
-	// fill(0);
-	// stroke(2);
-	// arc(this.xPosition+40, this.yPosition +50, this.radius - 10, this.radius - 10, 0, PI);
-  //
-	// ellipse(this.xPosition + 20, this.yPosition + 25, this.radius/9,  this.radius/9);
-	// ellipse(this.xPosition + 60, this.yPosition + 25, this.radius/9,  this.radius/9);
+	fill(255);
+	ellipse(this.xPosition , this.yPosition , this.radius*2 - 10, this.radius*2 - 10);
 
+	fill(0);
+	stroke(2);
+	arc(this.xPosition, this.yPosition +10, this.radius - 10, this.radius - 10, 0, PI);
+
+	ellipse(this.xPosition -20, this.yPosition -15, this.radius/9,  this.radius/9);
+	ellipse(this.xPosition + 20, this.yPosition -15, this.radius/9,  this.radius/9);
 }
-
+//enemy get smaller
 Glob.prototype.shrink = function(){
   this.radius = this.radius - 15;
 }
-
+//enemy moving and getting faster as time progresses
 Glob.prototype.move = function(){
   this.yPosition += this.yDir;
-
-  // console.log("log");
-
-
+  if (clock >= 30 && clock <= 60){
+    this.yDir = 5;
+    timer = 2000;
+  }
+  if(clock >= 60){
+    this.yDir = 10;
+    timer = 1000;
+  }
 }
-
-Glob.prototype.turnLeft = function(){
-  this.xDir = -2;
-}
-
-Glob.prototype.turnRight = function(){
-  this.xDir = 2;
-}
-
-Glob.prototype.stopMove = function(){
-  this.yDir = 0;
-}
-
 Glob.prototype.run = function(){
   this.display();
   this.move();
 }
-
-Glob.prototype.collide = function(other){
-  var d = dist(this.xPosition, this.yPosition, other.xPosition, other.yPosition);
-  if(d<this.radius + other.radius){
-    return true;
-  }else{
-    return false;
-  }
-
-}
-
 Glob.prototype.gone = function(){
   this.delete = true;
 }
-
 Glob.prototype.passed = function(){
   if(Glob.yPosition > height){
     this.total += 1;
   }
 }
-
-
-//
 function GlobSystem (){
-  // this.globs = [];
 }
-
 GlobSystem.prototype.produceGlob = function(){
-  globs.push(new Glob(random(0,1000),0));
+  globs.push(new Glob(random(100,900),0));
 }
-
+//enemy that passes counter
 GlobSystem.prototype.run = function(){
   var p;
+  push();
     for (var i = globs.length - 1; i >= 0; i--) {
         p = globs[i];
         p.run();
-        console.log(globs[i].yDir);
 
         if(p.yPosition >= height){
           bp += 1;
           globs.splice(i,1);
-          // a -= 80;
-          console.log(bp);
+
         }
 
     }
-
+    pop();
 }
-
-
-
 /////////////////////////////// DEATH BAR ////////////////////////////////////////
-
+//losing score
 function DeathBar(){
   this.xPosition = 0;
   this.yPosition =00;
@@ -416,19 +364,17 @@ function DeathBar(){
   this.ySize = 1000;
 
 }
-
 DeathBar.prototype.container = function(){
+  rectMode(CORNER);
   stroke(0);
   fill(255);
   rect(this.xPosition, this.yPosition,this.xSize, this.ySize);
 }
-
 function DeathBlock(x,y){
   this.xPosition = x;
   this.yPosition = y;
   this.size = 80;
 }
-
 DeathBlock.prototype.display = function(){
   stroke(255,0,0);
   fill(0);
@@ -437,68 +383,24 @@ DeathBlock.prototype.display = function(){
 DeathBlock.prototype.run = function(){
   DeathBlock.display();
 }
-
-
-// function DeathBlockSystem (){
-//   // this.db = [];
-// }
-//
-// DeathBlockSystem.prototype.produceBlock = function (){
-//   db.push(new DeathBlock(0,a));
-// }
-//
-// DeathBlockSystem.prototype.run = function(){
-//   var b;
-//     for (var i = db.length - 1; i >= 0; i--) {
-//         b = db[i];
-//         b.run();
-//       }
-//
-// }
-
-
-
-//
-// function DeathBlockSystem (){
-//
-// }
-//
-// DeathBlockSystem.prototype.produce = function(){
-//   dbList.push(new DeathBlock(this.xPosition,this.yPosition));
-// }
-//
-// DeathBlockSystem.prototype.run = function(){
-//   var d;
-//     for (var i = dbList.length - 1; i >= 0; i--) {
-//         d = dbList[i];
-//         d.displ();
-//
-//     }
-//   }
-// }
-
-
-
 ///////////////////////ULTIMATE BAR////////////////////////////////
 function UltimateBar (){
   this.ultimate = 0;
-  this.max = 100;
-  this.rectWidth = 200;
+  this.max = 200;
+  this.rectWidth = 400;
   this.ultMet = false;
 }
 
 UltimateBar.prototype.display = function(){
-  var drawWidth = (this.ultimate / this.max) * this.rectWidth;
-  fill(255,0,0);
-  rect(500, 900, drawWidth, 50);
+  var drawWidth = (this.ultimate/this.max) * this.rectWidth;
 
+  fill(255,0,0);
+  rect(300, 900, drawWidth, 50);
  // Outline
  stroke(0);
  noFill();
- rect(500, 900, this.rectWidth, 50);
+ rect(300, 900, this.rectWidth, 50);
 }
-
-
 UltimateBar.prototype.boom = function (){
   this.ultMet = true;
 }
@@ -506,13 +408,9 @@ UltimateBar.prototype.end = function(){
   this.ultMet = false;
   this.ultimate = 0;
 }
-
 /////////////////////////Timer//////////////////
-
 function Timer (){
-
 }
-
 Timer.prototype.countup = function(){
   clock += 1;
 }
