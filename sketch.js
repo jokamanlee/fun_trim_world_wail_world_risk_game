@@ -104,7 +104,7 @@ if (screenChange === 0){
     if(ult.ultimate == 200){
         if(bp == -1){
           image(cheese,700,200,100,100);
-          text("so i see that your have charged your ultimate \n BUT \n you don't need it since you are just that good at this game \n so instead of here is a upgrade for your bullets",200,100);
+          text("So i see that you have charged your ultimate \n BUT \n you don't need it since you are just that good at this game \n which is why you deserve an upgrade.",200,100);
           for(var e = 0; e < shoots.length; e++){
             shoots[e].radius = 70;
           }
