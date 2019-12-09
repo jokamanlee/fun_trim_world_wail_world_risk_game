@@ -7,8 +7,6 @@ let downKeyIsHeld = false;
 var Player;
 var globs = [];
 let shoots = [];
-let moveLeftBlock = false;
-let moveRightBlock = false;
 var GlobSystem;
 var gs;
 var timer;
@@ -120,8 +118,8 @@ if (screenChange === 0){
     text("YOU DID GREAT!",400,400);
     text("Click to Play Again",380,450);
     textSize(20);
-    text("Survival Time: " + clock, 400,600);
-    text("Score: " + score,400,700);
+    text("Survival Time: " + clock + "Seconds", 400,600);
+    text(score + "Block Monsters Killed",400,700);
   }
   for (var i = 0; i <= bp; i++) {
     rectMode(CORNER);
