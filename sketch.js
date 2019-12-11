@@ -43,7 +43,6 @@ function setup() {
 }
 
 function draw() {
-console.log(timer);
 if (screenChange === 0){
   background(255,0,0);
   fill(255,0,255);
@@ -118,9 +117,10 @@ if (screenChange === 0){
     text("YOU DID GREAT!",400,400);
     text("Click to Play Again",380,450);
     textSize(20);
-    text("Survival Time: " + clock + "Seconds", 400,600);
-    text(score + "Block Monsters Killed",400,700);
+    text("Survival Time: " + clock +" " + "Seconds", 400,600);
+    text(score +" "+ "Block Monsters Killed",400,700);
   }
+  //produces the blocks that aren't hit before reaching the bottom
   for (var i = 0; i <= bp; i++) {
     rectMode(CORNER);
     fill(random(255),random(255),random(255));
@@ -312,11 +312,12 @@ Glob.prototype.move = function(){
   this.yPosition += this.yDir;
   if (clock >= 30 && clock <= 60){
     this.yDir = 5;
-    timer = 2000;
   }
-  if(clock >= 60){
+  if(clock >= 60 && clock <= 120){
     this.yDir = 10;
-    timer = 1000;
+  }
+  if(clock >= 120 ){
+    this.yDir = 15;
   }
 }
 Glob.prototype.run = function(){
